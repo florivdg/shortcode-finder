@@ -132,11 +132,10 @@ The plugin only reads existing post content to search for shortcodes when you pe
 == Support ==
 
 For support, feature requests, or bug reports, please visit:
-* [Plugin Support Forum](https://wordpress.org/support/plugin/shortcode-finder/)
 * [GitHub Repository](https://github.com/florivdg/shortcode-finder)
 
 == Credits ==
 
 Developed by Florian van der Galiën
-* Website: [https://flori.dev](https://flori.dev)
+* Website: https://flori.dev
 * WordPress: [@florivdg](https://profiles.wordpress.org/florivdg/)
