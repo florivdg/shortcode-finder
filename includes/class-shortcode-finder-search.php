@@ -29,9 +29,6 @@ class ShortcodeFinder_Search {
         // Get all public post types
         $post_types = get_post_types(array('public' => true), 'names');
 
-        // Build SQL query
-        $post_types_placeholder = implode(', ', array_fill(0, count($post_types), '%s'));
-
         // Prepare search patterns for different shortcode formats
         $search_patterns = array(
             '[' . $shortcode . ']',           // Simple shortcode
@@ -40,33 +37,30 @@ class ShortcodeFinder_Search {
             '[ ' . $shortcode . ' '           // Shortcode with spaces
         );
 
-        $where_conditions = array();
-        $values = array();
+        $pattern_values = array();
 
-        // Add post types to values array
-        foreach ($post_types as $post_type) {
-            $values[] = $post_type;
-        }
-
-        // Build WHERE conditions for each pattern
+        // Collect values for LIKE comparisons
         foreach ($search_patterns as $pattern) {
-            $where_conditions[] = "post_content LIKE %s";
-            $values[] = '%' . $wpdb->esc_like($pattern) . '%';
+            $pattern_values[] = '%' . $wpdb->esc_like($pattern) . '%';
         }
 
-        // Build the complete query
-        $query = "
-            SELECT DISTINCT ID, post_title, post_type, post_status, post_content
-            FROM {$wpdb->posts}
-            WHERE post_type IN ($post_types_placeholder)
-            AND post_status = 'publish'
-            AND (" . implode(' OR ', $where_conditions) . ")
-            ORDER BY post_title ASC
-        ";
+        $post_type_placeholders = implode(', ', array_fill(0, count($post_types), '%s'));
+        $where_clause = implode(' OR ', array_fill(0, count($pattern_values), 'post_content LIKE %s'));
 
-        // Prepare and execute query
-        $prepared_query = $wpdb->prepare($query, $values);
-        $results = $wpdb->get_results($prepared_query);
+        $values = array_merge($post_types, array('publish'), $pattern_values);
+        $results = $wpdb->get_results(
+            $wpdb->prepare(
+                "
+                SELECT DISTINCT ID, post_title, post_type, post_status, post_content
+                FROM {$wpdb->posts}
+                WHERE post_type IN ($post_type_placeholders)
+                AND post_status = %s
+                AND ($where_clause)
+                ORDER BY post_title ASC
+                ",
+                $values
+            )
+        );
 
         // Additional filtering to ensure we have exact shortcode matches
         $filtered_results = array();
@@ -157,18 +151,21 @@ class ShortcodeFinder_Search {
         global $wpdb;
 
         $post_types = get_post_types(array('public' => true), 'names');
-        $post_types_placeholder = implode(', ', array_fill(0, count($post_types), '%s'));
 
-        $query = $wpdb->prepare(
-            "SELECT post_content
-             FROM {$wpdb->posts}
-             WHERE post_type IN ($post_types_placeholder)
-             AND post_status = 'publish'
-             AND post_content LIKE %s",
-            array_merge($post_types, array('%[%]%'))
+        $post_type_placeholders = implode(', ', array_fill(0, count($post_types), '%s'));
+        $values = array_merge($post_types, array('publish', '%[%]%'));
+        $results = $wpdb->get_results(
+            $wpdb->prepare(
+                "
+                SELECT post_content
+                FROM {$wpdb->posts}
+                WHERE post_type IN ($post_type_placeholders)
+                AND post_status = %s
+                AND post_content LIKE %s
+                ",
+                $values
+            )
         );
-
-        $results = $wpdb->get_results($query);
 
         $shortcodes = array();
         $pattern = '/\[([a-zA-Z0-9_-]+)(?:\s+[^\]]*)?(?:\]|\].*?\[\/\1\])/';

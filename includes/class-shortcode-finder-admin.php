@@ -80,7 +80,9 @@ class ShortcodeFinder_Admin {
      */
     public function ajax_search_shortcode() {
         // Verify nonce
-        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'shortcode_finder_nonce')) {
+        $nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+
+        if ( ! $nonce || ! wp_verify_nonce( $nonce, 'shortcode_finder_nonce' ) ) {
             wp_die(__('Security check failed', 'shortcode-finder'));
         }
 
@@ -90,7 +92,7 @@ class ShortcodeFinder_Admin {
         }
 
         // Get and sanitize shortcode
-        $shortcode = isset($_POST['shortcode']) ? sanitize_text_field($_POST['shortcode']) : '';
+        $shortcode = isset( $_POST['shortcode'] ) ? sanitize_text_field( wp_unslash( $_POST['shortcode'] ) ) : '';
 
         if (empty($shortcode)) {
             wp_send_json_error(array('message' => __('Please enter a shortcode to search for.', 'shortcode-finder')));
@@ -101,8 +103,14 @@ class ShortcodeFinder_Admin {
         $results = $search->find_shortcode($shortcode);
 
         if (empty($results)) {
+            $no_results_message = sprintf(
+                /* translators: %s: searched shortcode. */
+                __('No posts found containing the shortcode "%s".', 'shortcode-finder'),
+                esc_html($shortcode)
+            );
+
             wp_send_json_success(array(
-                'message' => sprintf(__('No posts found containing the shortcode "%s".', 'shortcode-finder'), esc_html($shortcode)),
+                'message' => $no_results_message,
                 'html' => '',
                 'count' => 0
             ));
@@ -112,13 +120,17 @@ class ShortcodeFinder_Admin {
         ob_start();
         ?>
         <div class="results-summary">
-            <p><?php printf(
-                _n(
-                    'Found <strong>%d post</strong> containing the shortcode "%s".',
-                    'Found <strong>%d posts</strong> containing the shortcode "%s".',
-                    count($results),
-                    'shortcode-finder'
-                ),
+            <p><?php
+            /* translators: 1: number of posts found, 2: searched shortcode. */
+            $results_summary_template = _n(
+                'Found <strong>%1$d post</strong> containing the shortcode "%2$s".',
+                'Found <strong>%1$d posts</strong> containing the shortcode "%2$s".',
+                count($results),
+                'shortcode-finder'
+            );
+
+            printf(
+                $results_summary_template,
                 count($results),
                 esc_html($shortcode)
             ); ?></p>
