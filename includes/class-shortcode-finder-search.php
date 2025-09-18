@@ -48,16 +48,18 @@ class ShortcodeFinder_Search {
         $where_clause = implode(' OR ', array_fill(0, count($pattern_values), 'post_content LIKE %s'));
 
         $values = array_merge($post_types, array('publish'), $pattern_values);
-        $results = $wpdb->get_results(
+        $results = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct search across post content requires uncached $wpdb access
             $wpdb->prepare(
+                // phpcs:disable WordPress.DB.PreparedSQL.NotPrepared -- Placeholders are safely constructed from controlled inputs
                 "
                 SELECT DISTINCT ID, post_title, post_type, post_status, post_content
                 FROM {$wpdb->posts}
-                WHERE post_type IN ($post_type_placeholders)
+                WHERE post_type IN (" . $post_type_placeholders . ")
                 AND post_status = %s
-                AND ($where_clause)
+                AND (" . $where_clause . ")
                 ORDER BY post_title ASC
                 ",
+                // phpcs:enable WordPress.DB.PreparedSQL.NotPrepared
                 $values
             )
         );
@@ -154,15 +156,17 @@ class ShortcodeFinder_Search {
 
         $post_type_placeholders = implode(', ', array_fill(0, count($post_types), '%s'));
         $values = array_merge($post_types, array('publish', '%[%]%'));
-        $results = $wpdb->get_results(
+        $results = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Listing all shortcode usages requires raw post queries
             $wpdb->prepare(
+                // phpcs:disable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- Placeholders are dynamically constructed but correct number of values provided
                 "
                 SELECT post_content
                 FROM {$wpdb->posts}
-                WHERE post_type IN ($post_type_placeholders)
+                WHERE post_type IN (" . $post_type_placeholders . ")
                 AND post_status = %s
                 AND post_content LIKE %s
                 ",
+                // phpcs:enable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber
                 $values
             )
         );

@@ -43,9 +43,9 @@ class ShortcodeFinder_Admin {
 
             <div class="shortcode-finder-container">
                 <div class="search-section">
-                    <h2><?php _e('Search for Shortcode', 'shortcode-finder'); ?></h2>
+                    <h2><?php esc_html_e('Search for Shortcode', 'shortcode-finder'); ?></h2>
                     <p class="description">
-                        <?php _e('Enter a shortcode name (with or without brackets) to find all published pages and posts where it is used.', 'shortcode-finder'); ?>
+                        <?php esc_html_e('Enter a shortcode name (with or without brackets) to find all published pages and posts where it is used.', 'shortcode-finder'); ?>
                     </p>
 
                     <div class="search-form">
@@ -56,7 +56,7 @@ class ShortcodeFinder_Admin {
                         <button type="button"
                                 id="search-button"
                                 class="button button-primary">
-                            <?php _e('Search', 'shortcode-finder'); ?>
+                            <?php esc_html_e('Search', 'shortcode-finder'); ?>
                         </button>
                         <span class="spinner"></span>
                     </div>
@@ -65,7 +65,7 @@ class ShortcodeFinder_Admin {
                 </div>
 
                 <div class="results-section" style="display: none;">
-                    <h2><?php _e('Search Results', 'shortcode-finder'); ?></h2>
+                    <h2><?php esc_html_e('Search Results', 'shortcode-finder'); ?></h2>
                     <div id="results-container">
                         <!-- Results will be loaded here via AJAX -->
                     </div>
@@ -83,12 +83,12 @@ class ShortcodeFinder_Admin {
         $nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
 
         if ( ! $nonce || ! wp_verify_nonce( $nonce, 'shortcode_finder_nonce' ) ) {
-            wp_die(__('Security check failed', 'shortcode-finder'));
+            wp_die(esc_html__('Security check failed', 'shortcode-finder'));
         }
 
         // Check capabilities
         if (!current_user_can('manage_options')) {
-            wp_die(__('You do not have sufficient permissions', 'shortcode-finder'));
+            wp_die(esc_html__('You do not have sufficient permissions', 'shortcode-finder'));
         }
 
         // Get and sanitize shortcode
@@ -130,7 +130,10 @@ class ShortcodeFinder_Admin {
             );
 
             printf(
-                $results_summary_template,
+                wp_kses(
+                    $results_summary_template,
+                    array('strong' => array())
+                ),
                 count($results),
                 esc_html($shortcode)
             ); ?></p>
@@ -139,10 +142,10 @@ class ShortcodeFinder_Admin {
         <table class="wp-list-table widefat fixed striped">
             <thead>
                 <tr>
-                    <th><?php _e('Title', 'shortcode-finder'); ?></th>
-                    <th><?php _e('Post Type', 'shortcode-finder'); ?></th>
-                    <th><?php _e('Status', 'shortcode-finder'); ?></th>
-                    <th><?php _e('Actions', 'shortcode-finder'); ?></th>
+                    <th><?php esc_html_e('Title', 'shortcode-finder'); ?></th>
+                    <th><?php esc_html_e('Post Type', 'shortcode-finder'); ?></th>
+                    <th><?php esc_html_e('Status', 'shortcode-finder'); ?></th>
+                    <th><?php esc_html_e('Actions', 'shortcode-finder'); ?></th>
                 </tr>
             </thead>
             <tbody>
@@ -168,12 +171,12 @@ class ShortcodeFinder_Admin {
                             <a href="<?php echo esc_url(get_edit_post_link($post->ID)); ?>"
                                class="button button-small"
                                target="_blank">
-                                <?php _e('Edit', 'shortcode-finder'); ?>
+                                <?php esc_html_e('Edit', 'shortcode-finder'); ?>
                             </a>
                             <a href="<?php echo esc_url(get_permalink($post->ID)); ?>"
                                class="button button-small"
                                target="_blank">
-                                <?php _e('View', 'shortcode-finder'); ?>
+                                <?php esc_html_e('View', 'shortcode-finder'); ?>
                             </a>
                         </td>
                     </tr>

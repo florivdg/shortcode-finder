@@ -55,9 +55,6 @@ class ShortcodeFinder {
      * Initialize the plugin
      */
     private function init() {
-        // Load plugin text domain for translations
-        add_action('init', array($this, 'load_textdomain'));
-
         // Load required files
         $this->load_dependencies();
 
@@ -69,17 +66,6 @@ class ShortcodeFinder {
         if (is_admin()) {
             ShortcodeFinder_Admin::get_instance();
         }
-    }
-
-    /**
-     * Load plugin text domain for translations
-     */
-    public function load_textdomain() {
-        load_plugin_textdomain(
-            'shortcode-finder',
-            false,
-            dirname(plugin_basename(__FILE__)) . '/languages'
-        );
     }
 
     /**
