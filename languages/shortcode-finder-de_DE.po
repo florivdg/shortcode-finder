@@ -1,0 +1,102 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Shortcode Finder 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-24 00:00+0000\n"
+"PO-Revision-Date: 2024-11-24 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: German\n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Codex CLI\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: shortcode-finder.php:98 shortcode-finder.php:99
+msgid "Shortcode Finder"
+msgstr "Shortcode Finder"
+
+#: shortcode-finder.php:139 includes/class-shortcode-finder-admin.php:105 assets/admin.js:37
+msgid "Please enter a shortcode to search for."
+msgstr "Bitte geben Sie einen Shortcode für die Suche ein."
+
+#: shortcode-finder.php:140 assets/admin.js:64
+msgid "An error occurred during the search."
+msgstr "Bei der Suche ist ein Fehler aufgetreten."
+
+#: shortcode-finder.php:141 assets/admin.js:72
+msgid "Failed to perform search. Please try again."
+msgstr "Die Suche konnte nicht ausgeführt werden. Bitte versuchen Sie es erneut."
+
+#: shortcode-finder.php:142 assets/admin.js:95
+msgid "Shortcode copied to clipboard!"
+msgstr "Shortcode in die Zwischenablage kopiert!"
+
+#: includes/class-shortcode-finder-admin.php:46
+msgid "Search for Shortcode"
+msgstr "Nach Shortcode suchen"
+
+#: includes/class-shortcode-finder-admin.php:48
+msgid "Enter a shortcode name (with or without brackets) to find all published pages and posts where it is used."
+msgstr "Geben Sie einen Shortcode-Namen (mit oder ohne Klammern) ein, um alle veröffentlichten Seiten und Beiträge zu finden, in denen er verwendet wird."
+
+#: includes/class-shortcode-finder-admin.php:54
+msgid "e.g., gallery or [gallery]"
+msgstr "z. B. gallery oder [gallery]"
+
+#: includes/class-shortcode-finder-admin.php:59
+msgid "Search"
+msgstr "Suchen"
+
+#: includes/class-shortcode-finder-admin.php:68
+msgid "Search Results"
+msgstr "Suchergebnisse"
+
+#: includes/class-shortcode-finder-admin.php:86
+msgid "Security check failed"
+msgstr "Sicherheitsprüfung fehlgeschlagen"
+
+#: includes/class-shortcode-finder-admin.php:91
+msgid "You do not have sufficient permissions"
+msgstr "Sie verfügen nicht über die erforderlichen Berechtigungen"
+
+#: includes/class-shortcode-finder-admin.php:108
+#, php-format
+msgid "No posts found containing the shortcode \"%s\"."
+msgstr "Keine Beiträge gefunden, die den Shortcode \"%s\" enthalten."
+
+#: includes/class-shortcode-finder-admin.php:125
+#, php-format
+msgid "Found <strong>%1$d post</strong> containing the shortcode \"%2$s\"."
+msgid_plural "Found <strong>%1$d posts</strong> containing the shortcode \"%2$s\"."
+msgstr[0] "Es wurde <strong>%1$d Beitrag</strong> gefunden, der den Shortcode \"%2$s\" enthält."
+msgstr[1] "Es wurden <strong>%1$d Beiträge</strong> gefunden, die den Shortcode \"%2$s\" enthalten."
+
+#: includes/class-shortcode-finder-admin.php:145
+msgid "Title"
+msgstr "Titel"
+
+#: includes/class-shortcode-finder-admin.php:146
+msgid "Post Type"
+msgstr "Inhaltstyp"
+
+#: includes/class-shortcode-finder-admin.php:147
+msgid "Status"
+msgstr "Status"
+
+#: includes/class-shortcode-finder-admin.php:148
+msgid "Actions"
+msgstr "Aktionen"
+
+#: includes/class-shortcode-finder-admin.php:157
+msgid "(no title)"
+msgstr "(kein Titel)"
+
+#: includes/class-shortcode-finder-admin.php:174
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: includes/class-shortcode-finder-admin.php:179
+msgid "View"
+msgstr "Ansehen"

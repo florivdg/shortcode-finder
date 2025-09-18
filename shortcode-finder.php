@@ -120,7 +120,13 @@ class ShortcodeFinder {
         // Localize script for AJAX
         wp_localize_script('shortcode-finder-admin', 'shortcode_finder_ajax', array(
             'ajax_url' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('shortcode_finder_nonce')
+            'nonce' => wp_create_nonce('shortcode_finder_nonce'),
+            'i18n' => array(
+                'enter_shortcode' => esc_html__('Please enter a shortcode to search for.', 'shortcode-finder'),
+                'search_error' => esc_html__('An error occurred during the search.', 'shortcode-finder'),
+                'search_failed' => esc_html__('Failed to perform search. Please try again.', 'shortcode-finder'),
+                'copy_success' => esc_html__('Shortcode copied to clipboard!', 'shortcode-finder')
+            )
         ));
     }
 }

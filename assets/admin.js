@@ -13,6 +13,7 @@
         var $message = $('#search-message');
         var $resultsSection = $('.results-section');
         var $resultsContainer = $('#results-container');
+        var i18n = (typeof shortcode_finder_ajax !== 'undefined' && shortcode_finder_ajax.i18n) ? shortcode_finder_ajax.i18n : {};
 
         // Handle search button click
         $searchButton.on('click', function() {
@@ -40,7 +41,7 @@
 
             // Validate input
             if (!shortcode) {
-                showMessage('Please enter a shortcode to search for.', 'error');
+                showMessage(i18n.enter_shortcode || 'Please enter a shortcode to search for.', 'error');
                 $searchInput.focus();
                 return;
             }
@@ -83,12 +84,12 @@
                         }
                     } else {
                         // Error in search
-                        showMessage(response.data.message || 'An error occurred during the search.', 'error');
+                        showMessage((response.data && response.data.message) || i18n.search_error || 'An error occurred during the search.', 'error');
                         $resultsSection.slideUp('fast');
                     }
                 },
                 error: function(xhr, status, error) {
-                    showMessage('Failed to perform search. Please try again.', 'error');
+                    showMessage(i18n.search_failed || 'Failed to perform search. Please try again.', 'error');
                     console.error('Search error:', error);
                     $resultsSection.slideUp('fast');
                 },
@@ -153,7 +154,7 @@
             e.preventDefault();
             var shortcode = $(this).data('shortcode');
             copyToClipboard(shortcode);
-            showMessage('Shortcode copied to clipboard!', 'success');
+            showMessage(i18n.copy_success || 'Shortcode copied to clipboard!', 'success');
         });
 
         // Copy to clipboard helper
