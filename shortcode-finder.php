@@ -1,12 +1,17 @@
 <?php
 /**
  * Plugin Name: Shortcode Finder
- * Plugin URI: https://flori.dev/shortcode-finder
- * Description: Find pages and post types where a given shortcode is embedded. Backend admin only tool.
+ * Plugin URI: https://wordpress.org/plugins/shortcode-finder/
+ * Description: Search and find all pages, posts, and custom post types where specific shortcodes are used. Essential tool for WordPress administrators to track shortcode usage across their site.
  * Version: 1.0.0
+ * Requires at least: 5.0
+ * Requires PHP: 7.2
  * Author: Florian van der Galiën
+ * Author URI: https://flori.dev
  * License: GPL v2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: shortcode-finder
+ * Domain Path: /languages
  */
 
 // Exit if accessed directly
@@ -50,6 +55,9 @@ class ShortcodeFinder {
      * Initialize the plugin
      */
     private function init() {
+        // Load plugin text domain for translations
+        add_action('init', array($this, 'load_textdomain'));
+
         // Load required files
         $this->load_dependencies();
 
@@ -61,6 +69,17 @@ class ShortcodeFinder {
         if (is_admin()) {
             ShortcodeFinder_Admin::get_instance();
         }
+    }
+
+    /**
+     * Load plugin text domain for translations
+     */
+    public function load_textdomain() {
+        load_plugin_textdomain(
+            'shortcode-finder',
+            false,
+            dirname(plugin_basename(__FILE__)) . '/languages'
+        );
     }
 
     /**

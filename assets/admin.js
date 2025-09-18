@@ -158,11 +158,16 @@
 
         // Copy to clipboard helper
         function copyToClipboard(text) {
-            var $temp = $('<input>');
-            $('body').append($temp);
-            $temp.val(text).select();
-            document.execCommand('copy');
-            $temp.remove();
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text);
+            } else {
+                // Fallback for older browsers
+                var $temp = $('<input>');
+                $('body').append($temp);
+                $temp.val(text).select();
+                document.execCommand('copy');
+                $temp.remove();
+            }
         }
     });
 
